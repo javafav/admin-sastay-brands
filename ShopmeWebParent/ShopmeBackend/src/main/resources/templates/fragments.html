@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="page_head(title,remove)" th:remove="${remove}">
+ <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+    
+<title>[[${title}]]</title>
+
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css" />
+<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}">
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+<link rel="stylesheet" th:href="@{/css/style.css}">
+
+
+<link rel="icon" type="image/png" sizes="32x32" th:href="@{/favicon/favicon-32x32.png}">
+<link rel="icon" type="image/png" sizes="16x16" th:href="@{/favicon/favicon-16x16.png}">
+
+</head>
+<body>
+
+	<th th:fragment="column_link(fieldName, columnLabel, tag)" th:remove="${tag}">
+		<a class="text-white"
+		th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + '&keyword=' + ${keyword != null ? keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : '' }}"
+		>
+			[[${columnLabel}]] 
+			</a> <span th:if="${sortField == fieldName}"
+		th:class="${sortDir == 'asc' ? 'fa fa-sort-up' : 'fa fa-sort-down'}"></span>
+
+
+	</th>
+
+	<a th:fragment="page_link(pageNum,columnLabel)"
+	    class="page-link"
+		th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir='+ ${sortDir} + '&keyword=' + ${keyword != null ? keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : '' }}">[[${columnLabel}]]</a>
+
+
+
+	<div class="text-center mt-2  footer" th:fragment="footer">
+		<p>Shopme Control Panel - Copyright &copy; Shopme</p>
+	</div>
+	
+	
+	<div th:fragment="status(enabled, entitytName, entityURL)" th:remove="tag">
+		<a th:if="${enabled == true}"
+			class="fas fa-check-circle fa-2x icon-green m-2"
+			th:href="@{${entityURL} + '/enabled/false'}"
+            th:title=" 'Disable this ' + ${entitytName}"></a>
+			
+		 <a th:if="${enabled == false}" 
+		    class="fas fa-circle fa-2x icon-dark m-2"
+			th:href="@{${entityURL}  + '/enabled/true'}"
+			th:title=" 'Enable this ' + ${entitytName}"></a>
+	</div>
+
+
+	<div th:fragment="edit(entityName,editURL)" th:remove="tag">
+		<a class="fas fa-edit fa-2x icon-green"
+	       
+			th:href="@{${editURL}}"
+			th:title="'Edit this ' + ${entityName}"></a>
+			
+			</div>
+			
+
+<div th:fragment ="delete(entityName,deleteURL,,entityId,visible)" th:remove="tag">
+		
+		<th:block th:if="${visible}">
+
+
+			<a class="fas fa-trash fa-2x icon-dark link-delete"
+				
+				th:href="@{${deleteURL}}"
+				th:entityId="${entityId}" 
+				th:title="'Delete this ' + ${entityName}"></a>
+		</th:block>
+	</div>
+
+
+
+	<div th:fragment="pagination(entityName)" th:remove="${tag}">
+
+		<div class="text-center">
+			<span th:if="${totalItems > 0}">Showing [[${entityName}]] #
+				[[${startCount}]] to [[${endCount}]] of total [[${totalItems}]]</span> <span
+				th:unless="${totalItems > 0}">No [[${entityName}]] found</span>
+		</div>
+		<div th:if="${totalPages > 1}">
+
+			<nav>
+				<ul class="pagination justify-content-center flex-wrap">
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragments :: page_link(1,'First')"></a>
+					</li>
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+
+						<a
+						th:replace="fragments :: page_link(${currentPage -1},'Previous')"></a>
+
+					</li>
+					<li
+						th:class="${currentPage == i ? 'page-item active' : 'page-item'}"
+						th:each="i : ${#numbers.sequence(1,totalPages)}"><a
+						th:replace="fragments :: page_link(${i},${i})"></a></li>
+
+					<li
+						th:class="${currentPage < totalPages  ? 'page-item' : 'page-item disabled'}">
+
+						<a
+						th:replace="fragments :: page_link(${currentPage + 1},'Next')"></a>
+
+					</li>
+					<li
+						th:class="${currentPage < totalPages  ? 'page-item' : 'page-item disabled'}">
+
+						<a
+						th:replace="fragments :: page_link(${totalPages},'Last')"></a>
+
+					</li>
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	<div class="m-3" th:fragment="search_form_and_message">
+		<form th:action="@{${moduleURL} + '/page/1'}" class="form-inline">
+			<input type="hidden" name="sortField" th:value="${sortField}">
+			<input type="hidden" name="sortDir" th:value="${sortDir}">
+
+
+			Filter: &nbsp;  
+			<input type="search" name="keyword" 
+				th:value="${keyword}" class="form-control less-detail-field"> &nbsp; &nbsp;
+			<button type="submit" class="btn btn-primary less-details-margin">
+
+
+				<i class="fa fa-search"></i><span class="caption">&nbsp; Search</span>
+			</button>
+			&nbsp; &nbsp;
+			<button type="button" class="btn btn-secondary less-details-margin"
+				onclick="clearFunction();">
+				<i class="fa fa-eraser"></i><span class="caption">&nbsp; Clear</span>
+			</button>
+
+
+		</form>
+		
+		<div th:if="${message != null}"
+			class="alert alert-success text-center mt-3" >[[${message}]]</div>
+
+</div>
+
+<div th:fragment="format_currency(amount)" th:remove="tag">
+		<span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>[[${#numbers.formatDecimal(amount, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+	</div>
+	
+	<div th:fragment="format_time(dateTime)" th:remove="tag">
+		<span th:text="${#dates.format(dateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+	</div>	
+	<div th:fragment="currency_input(amount)" th:remove="tag">
+		<input type="text" readonly class="form-control" th:value="${(CURRENCY_SYMBOL_POSITION == 'Before price' ? CURRENCY_SYMBOL : '') + #numbers.formatDecimal(amount, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE) + (CURRENCY_SYMBOL_POSITION == 'After price' ? CURRENCY_SYMBOL : '')}">
+	</div>
+			
+
+</body>
+</html>

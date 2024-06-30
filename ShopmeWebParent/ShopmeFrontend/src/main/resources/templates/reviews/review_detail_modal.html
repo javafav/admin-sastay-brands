@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <h5 class="modal-title">Review Details</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Review ID:</label>
+        <div class="col-sm-9">
+            <input type="text" readonly class="form-control" th:value="${review.id}" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Product:</label>
+        <div class="col-sm-9">
+            <input type="text" readonly class="form-control" th:value="${review.product.name}" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Customer:</label>
+        <div class="col-sm-9">
+            <input type="text" readonly class="form-control" th:value="${review.customer.fullName}" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Headline:</label>
+        <div class="col-sm-9">
+            <input type="text" readonly class="form-control" th:value="${review.headline}" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Rating:</label>
+        <div class="col-sm-9">
+            <input type="text" readonly class="form-control" th:value="${review.rating}" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Comment:</label>
+        <div class="col-sm-9">
+            <textarea rows="5" class="form-control" readonly>[[${review.comment}]]</textarea>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Votes:</label>
+        <div class="col-sm-9">
+            <input type="text" readonly class="form-control" th:value="${review.votes}" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Review Time:</label>
+        <div class="col-sm-9">
+            <span th:text="${#dates.format(review.reviewTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+</div>

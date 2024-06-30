@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="page_head(title,remove)" th:remove="${remove}">
+
+<title>Shopme - [[${SITE_NAME}]]</title>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css" />
+
+<link rel="stylesheet" th:href="@{/style.css}" type="text/css" />
+
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<link th:href="@{/css/subscribe_newsletter.css}" rel="stylesheet" />
+ <link th:href="@{/css/styles.css}" rel="stylesheet" />
+<link th:href="@{/css/home.css}" rel="stylesheet" />
+
+</head>
+
+<head th:fragment="index_head(title, remove)" th:remove="${remove}">
+
+    <title>Shopme - [[${SITE_NAME}]]</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css" />
+
+    <!-- Bootstrap Icons CSS -->
+    <link rel="stylesheet" th:href="@{/_static/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css}"  />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css" />
+
+    <!-- Bootstrap JavaScript (requires jQuery) -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+</head>
+
+<div th:fragment="footer_menu">
+
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <div class="row">
+            <!-- Footer Menu -->
+            <div class="col-md-4 col-sm-6">
+                <h5 class="text-white mb-4">Useful Links</h5>
+                <ul class="nav flex-column">
+                    <!-- Start of Dynamic Footer Menu Items -->
+                    <th:block th:each="footerMenu : ${footerMenuItems}">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" th:href="@{'/m/' + ${footerMenu.alias}}" th:text="${footerMenu.title}"></a>
+                        </li>						
+                    </th:block>
+                    <!-- End of Dynamic Footer Menu Items -->
+                </ul>
+            </div>
+            <!-- Contact Information -->
+            <div class="col-md-4 col-sm-6">
+                <h5 class="text-white mb-4">Contact Us</h5>
+                <p class="text-white mb-2">Model Town</p>
+                <p class="text-white mb-2">Bahawal Pur Punjab, Pakistan</p>
+					<p class="text-white mb-2">
+						Email: <a href="mailto:sastaybrands@gmail.com" class="text-white">sastaybrands@gmail.com</a>
+					</p>
+					<p class="text-white">Phone: +92 300 4098211</p>
+            </div>
+            <!-- Subscribe Form -->
+            <div class="col-md-4 col-sm-12">
+                <h5 class="text-white mb-4">Subscribe to Our Newsletter</h5>
+					<form id="subscribeForm">
+						<div class="input-group mb-3">
+							<input type="email" id="emailInput" class="form-control"
+								placeholder="Enter your email" aria-label="Enter your email"
+								aria-describedby="button-addon2" required>
+							<button class="btn btn-outline-light" type="button"
+								id="subscribeButton">Subscribe</button>
+						</div>
+					</form>
+				</div>
+        </div>
+        <!-- Social Media Icons -->
+        <div class="text-center">
+            <a href="#" class="text-white me-3 "><i class="fa-brands fa-facebook fa-lg"></i></a>
+            <a href="#" class="text-white me-3 icon-lg"><i class="fa-brands  fa-twitter fa-lg"></i></a>
+            <a href="#" class="text-white me-3 icon-lg"><i class="fa-brands  fa-instagram fa-lg"></i></a>
+            <a href="#" class="text-white icon-lg"><i class="fa-brands  fa-linkedin fa-lg"></i></a>
+        </div>
+        <!-- Divider -->
+        <hr class="mt-4 mb-4" style="border-color: rgba(255, 255, 255, 0.2);">
+        <!-- Copyright Notice -->
+        <p class="m-0 text-center text-white">Copyright &copy; [[${COPYRIGHT}]]</p>
+    </div>
+</footer>
+
+
+
+</div>
+
+<body>
+<th th:fragment="column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
+    <a class="text-white no-underline"
+        th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName}  +'&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+        [[${columnLabel}]]
+    </a>                                
+    <span th:if="${sortField == fieldName}"
+        th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}" ></span>                  
+</th>
+
+
+<th th:fragment="column_link_for_form(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
+    <a class="text-white no-underline"
+        th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName}  +'&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keywordForm != null ? '&keywordForm=' + keywordForm : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
+        [[${columnLabel}]]
+    </a>                                
+    <span th:if="${sortField == fieldName}"
+        th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}" ></span>                  
+</th>
+
+
+<a th:fragment="page_link_for_form( moduleURL, pageNum,columnLabel)"
+	    class="page-link dropdown-menu-hover product-name"
+		th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir='+ ${sortDir} + '&keywordForm=' + ${keywordForm != null ? keywordForm : ''}}">[[${columnLabel}]]</a>
+
+
+
+<div th:fragment="pagination_for_form(entityName,moduleURL)" th:remove="${tag}">
+
+		<div class="text-center m-2">
+			<span th:if="${totalItems > 0}">Showing [[${entityName}]] #
+				[[${startCount}]] to [[${endCount}]] of total [[${totalItems}]]</span> <span
+				th:unless="${totalItems > 0}">No [[${entityName}]] found</span>
+		</div>
+		<div th:if="${totalPages > 1}">
+
+			<nav>
+				<ul class="pagination justify-content-center flex-wrap">
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragments :: page_link_for_form(${moduleURL},1,'First')" ></a>
+					</li>
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+
+						<a
+						th:replace="fragments :: page_link_for_form(${moduleURL},${currentPage -1},'Previous')"></a>
+
+					</li>
+					<li
+						th:class="${currentPage == i ? 'page-item active' : 'page-item'}"
+						th:each="i : ${#numbers.sequence(1,totalPages)}"><a
+						th:replace="fragments :: page_link_for_form(${moduleURL},${i},${i})"></a></li>
+
+					<li
+						th:class="${currentPage < totalPages  ? 'page-item' : 'page-item disabled'}">
+
+						<a
+						th:replace="fragments ::page_link_for_form(${moduleURL},${currentPage + 1},'Next')"></a>
+
+					</li>
+					<li
+						th:class="${currentPage < totalPages  ? 'page-item' : 'page-item disabled'}">
+
+						<a
+						th:replace="fragments :: page_link_for_form( ${moduleURL},${totalPages},'Last')"></a>
+
+					</li>
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+
+<a th:fragment="page_link( moduleURL, pageNum,columnLabel)"
+	    class="page-link dropdown-menu-hover product-name"
+		th:href="@{${moduleURL}+ '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir='+ ${sortDir} + '&keyword=' + ${keyword != null ? keyword : ''}}">[[${columnLabel}]]</a>
+
+
+	<div th:fragment="pagination(entityName,moduleURL)" th:remove="${tag}">
+
+		<div class="text-center m-2">
+			<span th:if="${totalItems > 0}">Showing [[${entityName}]] #
+				[[${startCount}]] to [[${endCount}]] of total [[${totalItems}]]</span> <span
+				th:unless="${totalItems > 0}">No [[${entityName}]] found</span>
+		</div>
+		<div th:if="${totalPages > 1}">
+
+			<nav>
+				<ul class="pagination justify-content-center flex-wrap">
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragments :: page_link(${moduleURL},1,'First')" ></a>
+					</li>
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+
+						<a
+						th:replace="fragments :: page_link(${moduleURL},${currentPage -1},'Previous')"></a>
+
+					</li>
+					<li
+						th:class="${currentPage == i ? 'page-item active' : 'page-item'}"
+						th:each="i : ${#numbers.sequence(1,totalPages)}"><a
+						th:replace="fragments :: page_link(${moduleURL},${i},${i})"></a></li>
+
+					<li
+						th:class="${currentPage < totalPages  ? 'page-item' : 'page-item disabled'}">
+
+						<a
+						th:replace="fragments :: page_link(${moduleURL},${currentPage + 1},'Next')"></a>
+
+					</li>
+					<li
+						th:class="${currentPage < totalPages  ? 'page-item' : 'page-item disabled'}">
+
+						<a
+						th:replace="fragments :: page_link( ${moduleURL},${totalPages},'Last')"></a>
+
+					</li>
+				</ul>
+			</nav>
+		</div>
+
+	</div>
+<div th:fragment="modal_dialog" class="modal fade text-center" id="modalDialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Warning</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body">
+                <span id="modalBody"></span>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="confirm_modal" class="modal fade text-center" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="confirmModalLabel">Delete Confirmation</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			
+			<div class="modal-body">
+				<span id="confirmText"></span>
+			</div>
+			
+			<div class="modal-footer">
+				<a class="btn btn-success" href="" id="yesButton">Yes</a>
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="format_currency(amount)" th:remove="tag">
+		<span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>[[${#numbers.formatDecimal(amount, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+	</div>
+	<div th:fragment="format_time(dateTime)" th:remove="tag">
+		<span th:text="${#dates.format(dateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+	</div>
+	<div th:fragment="currency_input(amount)" th:remove="tag">
+	<input type="text" readonly class="form-control" th:value="${(CURRENCY_SYMBOL_POSITION == 'Before price' ? CURRENCY_SYMBOL : '') + #numbers.formatDecimal(amount, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE) + (CURRENCY_SYMBOL_POSITION == 'After price' ? CURRENCY_SYMBOL : '')}">
+</div>	
+
+<div th:fragment="search_form()" th:remove="tag">
+    <form th:action="@{${moduleURL} + '/page/1'}" class="row g-3 align-items-center mb-3">
+        <input type="hidden" name="sortField" th:value="${sortField}" />
+        <input type="hidden" name="sortDir" th:value="${sortDir}" />
+        
+        <div class="col-auto">
+            <label for="keyword" >Filter:</label>
+            </div>
+             <div class="col-auto">
+            <input type="search" id="keyword" name="keywordForm" th:value="${keywordForm}" class="form-control" required>
+        </div>
+     
+  
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">
+               <i class="fa fa-search"></i><span class="caption">&nbsp; Search</span>
+            </button>
+        </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-secondary" onclick="clearFilter()">
+                <i class="fas fa-eraser"></i><span class="caption">&nbsp; Clear</span>
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security5">
+<head th:replace="fragments :: page_head('Products - ShopmeAdmin', 'none')"></head> 
+
+<body>
+	<div class="container-fluid">
+		<div th:replace="navigation :: menu"></div>
+
+		<div>
+			<h2>Manage Products</h2>
+  				<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+						<a th:href="@{/products/new}"
+							class="fa fa-folder-plus fa-2x icon-dark mr-3"></a><a
+							th:href="@{/products/export/csv}"
+							class="fa fa-file-csv fa-2x icon-dark mr-2"></a>
+				</th:block>
+		</div>
+
+	<div class="m-2">
+		<form th:action="@{/products/page/1}" class="form-inline" id="searchForm">
+			<input type="hidden" name="sortField" th:value="${sortField}">
+			<input type="hidden" name="sortDir" th:value="${sortDir}">
+			<span class="text-left">Category:</span>&nbsp;
+			<select class="form-control" name="categoryId" id="dropdownCategory">
+					<option value="0">All Categories</option>
+					 
+					 <th:block th:each="cat : ${listCategories}" >
+					 	 <option th:selected="(${categoryId} == ${cat.id})"  th:value="${cat.id}">[[${cat.name}]]</option>
+					 
+					 </th:block>
+					 
+					 </select>
+
+			&nbsp;Filter: 
+			<input type="search" name="keyword" 
+				th:value="${keyword}" class="form-control "> &nbsp; &nbsp;
+			<button type="submit" class="btn btn-primary proudct-less-details">
+
+
+				<i class="fa fa-search"></i><span class="caption">&nbsp; Search</span>
+			</button>
+			&nbsp; &nbsp;
+			<button type="button" class="btn btn-secondary proudct-less-details"
+				onclick="clearFunction();">
+				<i class="fa fa-eraser"></i><span class="caption">&nbsp; Clear</span>
+			</button>
+
+
+		</form>
+		<div th:if="${message != null}"
+			class="alert alert-success text-center mt-3">[[${message}]]</div>
+	</div>
+		
+		
+		
+	
+		
+
+
+		<div class="full-details">
+
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-md table-width">
+				<thead class="thead-dark">
+
+					<tr>
+
+						<th class="hideable-column" >ID</th>
+						<th>Main Image</th>
+						
+						<th	th:replace="fragments :: column_link( 'name', 'Product Name', 'none')" />
+						
+						<th class="hideable-column">
+						<th	th:replace="fragments :: column_link( 'brand', 'Brand', 'tag')" />
+						</th>
+                      
+                    
+                       <th class="hideable-column"> <th	th:replace="fragments :: column_link( 'category', 'Category', 'tag')" />  </th>
+                       
+                     
+                       
+                      <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                         <th>Enabled</th>
+					  </th:block>
+						
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody class="p-5">
+					<th:block th:each="product : ${listProducts}">
+						<tr>
+							<td class="hideable-column">[[${product.id}]]</td>
+							<td>
+							  <img  th:src="@{${product.mainImagePath}}" style="width: 120px" class="img-fluid"/>
+							</td>
+							<td >
+								<a th:href="@{'/products/details/' + ${product.id}}"
+								   class="link-detail"
+								   th:title="${product.name}">[[${product.shortName}]]</a>
+							
+							
+							</td>
+							<td class="hideable-column">[[${product.brand.name}]]</td>
+						   <td class="hideable-column">[[${product.category.name}]]</td>
+							    <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+								<td>
+								
+								<div th:replace="fragments :: status(${product.enabled}, 'product', '/products/' + ${product.id})"></div>
+							</td>
+							</th:block>
+							
+							<td>
+								<a class="fa fa-file-alt fa-2x icon-green link-detail" 
+								   th:href="@{'/products/details/' + ${product.id}}"
+								   title="View details of this product"></a>
+								&nbsp;
+							
+							<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
+								
+								<div	th:replace="fragments :: edit('products','/products/edit/' + ${product.id})"></div>
+						
+							</th:block>
+							
+							<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+										<div th:replace="fragments :: delete('products','/products/delete/' + ${product.id},${product.id},true)"></div>
+  
+							</th:block>
+							</td>
+
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
+		</div>
+
+
+	<div class="less-details">
+		<div th:each="product : ${listProducts}" class="row m-1">
+			<div class="col-4">
+				<img th:src="@{${product.mainImagePath}}" style="width: 80px" class="img-fluid" />			
+			</div>
+			<div class="col-8">
+				<div>
+					<a class="link-detail" th:href="@{'/products/details/' + ${product.id}}">[[${product.shortName}]]</a>				
+				</div>
+				<div class="mt-2">
+					<a class="fas fa-file-alt fa-2x icon-green link-detail"
+						th:href="@{'/products/detail/' + ${product.id}}"
+						></a>
+						
+					<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
+					&nbsp; 	
+					<div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})" ></div>
+					</th:block>
+					
+					<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+					&nbsp; 
+					<div th:replace="fragments :: delete('products','/products/delete/' + ${product.id},${product.id},true)" ></div>
+					
+			
+					</th:block>		
+				</div>
+			</div>
+			<div>&nbsp;</div>
+		</div>	
+	</div>
+</div>
+
+
+		<div th:replace="pagination_for_more_then_10page :: pagination('products')"></div>
+   
+		<div th:replace="modal_fragments :: confirm_modal"></div>
+		<div th:replace="fragments :: footer"></div>
+
+
+
+  <div  class="modal fade" id="detailModal">
+
+			<div class="modal-dialog modal-xl">
+
+				<div class="modal-content">
+					
+				</div>
+				
+			</div>
+			
+		
+</div>
+
+
+
+
+
+
+		<script th:src="@{/js/common.js}"></script>
+		<script th:src="@{/js/common_lists.js}"></script>
+		<script type="text/javascript">
+			moduleURL = "[[@{/products}]]";
+			entityName = "product"
+
+			
+			$(document).ready(function() {
+				handleDefaultDetailLinkClick();
+
+				$("#dropdownCategory").on("change", function() {
+					$("#searchForm").submit();
+
+				});
+
+			});
+		</script>
+</body>
+</html>
